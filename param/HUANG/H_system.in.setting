@@ -1,0 +1,35 @@
+pair_coeff 1 1 0.1135 3.2 
+pair_coeff 2 2 0.1035 4.135 
+pair_coeff 3 3 0.0492 3.695 
+pair_coeff 4 4 0.0299 2.4335 
+
+
+bond_coeff 1 1.6818 241.59 -483.18 563.71  # Bond parameters for o_2-si_4
+bond_coeff 2 1.8930 160.41 -320.82 374.29  # Bond parameters for c_4-si_4
+bond_coeff 3 1.0967 374.52 -749.04 873.88  # Bond parameters for c_4-h_1
+
+
+angle_coeff	1	112.1	60.1	-0.2327	-0.00394793	#	Angle	parameters	for	c_4-si_4-c_4	
+angle_coeff	2	109.47	69.01	-0.2320	-0.00446903	#	Angle	parameters	for	c_4-si_4-o_2	
+angle_coeff	3	106.77	42.51	-0.1216	-0.00271846	#	Angle	parameters	for	h_1-c_4-h_1	
+angle_coeff	4	110.2	31.27	-0.1095	-0.00203264	#	Angle	parameters	for	h_1-c_4-si_4	
+angle_coeff	5	109.41	81.05	-0.2716	-0.00524714	#	Angle	parameters	for	o_2-si_4-o_2	
+angle_coeff	6	149.09	18.51	-0.3165	-0.0020083	#	Angle	parameters	for	si_4-o_2-si_4	
+angle_coeff 1 bb 0 0 0
+angle_coeff 2 bb 0 0 0
+angle_coeff 4 bb 0 0 0
+angle_coeff 3 bb 7.1081 1.0967 1.0967  # Angle parameters for h_1, c_4, h_1
+angle_coeff 5 bb -85.9036 1.6818 1.6818  # Angle parameters for o_2, si_4, o_2
+angle_coeff 6 bb 23.6039 1.6818 1.6818 # Angle parameters for si_4, o_2, si_4
+angle_coeff 1 ba 0 0 0 0
+angle_coeff 2 ba 0 0 0 0
+angle_coeff 4 ba 0 0 0 0
+angle_coeff 3 ba 17.8360 17.8360 1.0967 1.0967  # Angle parameters for h_1, c_4, h_1
+angle_coeff 5 ba -18.1072 -18.1072 1.6818 1.6818  # Angle parameters for o_2, si_4, o_2
+angle_coeff 6 ba 42.3234 42.3234 1.6818 1.6818 # Angle parameters for si_4, o_2, si_4
+
+
+dihedral_coeff 1 0 0 0.1500 0  # Dihedral parameters for c_4-si_4-c_4-h_1
+dihedral_coeff 2 0 0 0.0600 0  # Dihedral parameters for c_4-si_4-o_2-si_4
+dihedral_coeff 3 0 0 0.1500 0  # Dihedral parameters for h_1-c_4-si_4-o_2
+dihedral_coeff 4 0 0 0.2416 0  # Dihedral parameters for o_2-si_4-o_2-si_4

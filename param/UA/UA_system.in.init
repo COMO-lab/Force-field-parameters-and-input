@@ -1,0 +1,12 @@
+### Hybrid/UA parameter
+# Pair style
+pair_style lj/cut/coul/cut 10.0
+
+# Bond style
+bond_style harmonic
+
+# Angle style
+angle_style harmonic
+
+# Dihedral style
+dihedral_style harmonic

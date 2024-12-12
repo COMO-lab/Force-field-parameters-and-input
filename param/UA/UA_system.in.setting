@@ -1,0 +1,21 @@
+### Hybrid/UA parameter
+
+pair_coeff 1 1 0.0800 3.30
+pair_coeff 1 2 0.0772 3.94
+pair_coeff 1 3 0.1247 3.38
+pair_coeff 2 2 0.1310 4.29
+pair_coeff 2 3 0.1596 3.83
+pair_coeff 3 3 0.1944 3.73
+
+
+bond_coeff 1 350.12 1.64 # Si-O
+bond_coeff 2 189.65 1.90 # Si-C
+
+
+angle_coeff 1 49.97 109.24 # C-Si-C
+angle_coeff 2 49.97 110.69 # C-Si-O
+angle_coeff 3 94.5 107.82 # O-Si-O
+angle_coeff 4 14.14 146.46 # Si-O-Si
+
+dihedral_coeff 1 0.01 1 3 # Si-O-Si-C
+dihedral_coeff 2 0.225 1 1 # Si-O-Si-O

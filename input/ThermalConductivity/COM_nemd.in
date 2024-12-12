@@ -1,0 +1,103 @@
+# ----------------- Init Section -----------------
+units real
+boundary p p p
+
+# ----------------- Data Format -----------------
+atom_style full
+
+# ----------------- Force Field -----------------
+
+## Bonded interactions
+
+include system.in.init
+
+# ----------------- Atom Definition Section -----------------
+read_data ./eq.data nocoeff
+
+# ----------------- Settings Section -----------------
+include system.in.settings
+
+# ----------------- Charges Section -----------------
+include system.in.charges
+
+# ----------------------------------
+## Neigh_list Calc Frequency
+# ----------------------------------
+neigh_modify every 1 delay 0
+
+dump 1 all custom 100000 movie.lammpstrj id type x y z
+dump_modify 1 append no
+
+
+compute zmin all reduce min z
+compute zmax all reduce max z
+
+thermo_style  custom step temp vol etotal c_zmin c_zmax
+run 0
+
+
+variable Zmin equal c_zmin
+variable Zmax equal c_zmax
+variable Zmid equal (${Zmin}+${Zmax})/2
+
+compute   ke1 all ke/atom
+variable  tempt1 atom c_ke1*2/3/0.0019854534
+compute   layers1 all chunk/atom bin/1d z lower 1.0 nchunk every units box
+fix       4 all ave/chunk 1 20000 20000 layers1 v_tempt1  density/mass file ./tmp_profile.data
+
+restart   1000000 restart.* #restart
+
+timestep 1
+
+fix mom all momentum 2500 linear 0 0 1 rescale
+
+##Variables
+
+variable dz1 equal ${Zmin}+5
+
+variable dz2 equal ${Zmax}-5
+
+variable h1 equal ${Zmid}-5
+variable h2 equal ${Zmid}+5
+
+variable T equal 300
+variable HiT equal ${T}+20
+variable LoT equal ${T}-20
+variable Run_steps equal 13000000
+
+########region########
+region hot block INF INF INF INF ${h1} ${h2} units box
+region cold1 block INF INF INF INF ${Zmin} ${dz1} units box
+region cold2 block INF INF INF INF ${dz2} ${Zmax} units box
+group hot region hot
+group cold1 region cold1
+group cold2 region cold2
+
+
+thermo_style    custom step temp vol pe ke etotal density spcpu
+thermo         1000
+
+fix 6 all nve
+
+
+###nemd heat flux##########
+
+fix hot_rescale hot temp/rescale 1 ${HiT} ${HiT} 0.001 1.0
+fix cold_rescale1 cold1 temp/rescale 1 ${LoT} ${LoT} 0.001 1.0
+fix cold_rescale2 cold2 temp/rescale 1 ${LoT} ${LoT} 0.001 1.0
+
+compute cold_temp1 cold1 temp/region cold1
+compute cold_temp2 cold2 temp/region cold2
+compute hot_temp hot temp/region hot
+
+fix_modify cold_rescale1 temp cold_temp1
+fix_modify cold_rescale2 temp cold_temp2
+fix_modify hot_rescale temp hot_temp
+
+fix 8 all ave/time 1 100 100 f_hot_rescale f_cold_rescale1 f_cold_rescale2 file ./flux.out
+
+
+run ${Run_steps}
+
+
+

@@ -1,0 +1,14 @@
+
+
+# ----------------- Init Section -----------------
+
+include "opls_system.in.init"
+
+
+# ----------------- Atom Definition Section -----------------
+
+read_data ./opls_system.data
+
+# ----------------- Settings Section -----------------
+
+include "opls_system.in.settings"

@@ -1,0 +1,14 @@
+
+
+# ----------------- Init Section -----------------
+
+include "dr_system.in.init"
+
+
+# ----------------- Atom Definition Section -----------------
+
+read_data ./dr_system.data
+
+# ----------------- Settings Section -----------------
+
+include "dr_system.in.settings"

@@ -1,0 +1,11 @@
+pair_style lj/cut/coul/long 12.0
+pair_modify mix arithmetic tail yes
+special_bonds lj/coul 0.0 0.0 1.0 
+
+bond_style class2
+
+angle_style class2
+
+dihedral_style opls
+
+kspace_style pppm 0.0001

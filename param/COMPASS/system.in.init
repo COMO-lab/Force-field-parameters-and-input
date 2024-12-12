@@ -1,0 +1,20 @@
+units real
+atom_style full
+bond_style class2
+# http://lammps.sandia.gov/doc/bond_class2.html
+
+angle_style class2
+# http://lammps.sandia.gov/doc/angle_class2.html
+
+dihedral_style class2
+# http://lammps.sandia.gov/doc/dihedral_class2.html
+
+improper_style class2
+# http://lammps.sandia.gov/doc/improper_class2.html
+
+pair_style lj/class2/coul/long 10.0
+# http://lammps.sandia.gov/doc/pair_class2.html
+
+pair_modify mix sixthpower tail yes
+special_bonds lj/coul 0.0 0.0 1.0 dihedral yes
+kspace_style pppm 0.0001

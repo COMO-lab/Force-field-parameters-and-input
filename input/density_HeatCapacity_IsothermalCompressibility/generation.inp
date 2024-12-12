@@ -1,0 +1,56 @@
+# ----------------- Init Section -----------------
+units real
+boundary p p p
+
+# ----------------- Data Format -----------------
+atom_style full
+
+# ----------------- Force Field -----------------
+
+include system.in.init
+
+# ----------------- Atom Definition Section -----------------
+read_data ./build.data nocoeff
+
+# ----------------- Settings Section -----------------
+include system.in.settings
+
+# ----------------- Charges Section -----------------
+include system.in.charges
+
+# ----------------------------------
+## Energy minimization
+# ----------------------------------
+minimize 1.0e-5 1.0e-7 1000 10000
+
+# ----------------------------------
+## Neigh_list Calc Frequency
+# ----------------------------------
+neigh_modify delay 0 every 1 check yes
+
+## Variables
+# ----------------------------------
+variable vthermo equal 1000
+variable vtimestep equal 1.0
+variable vdump equal 10000
+variable vtemp equal 300
+variable vpressgen1 equal 100
+variable vpressgen2 equal 10
+variable vpress equal 1.0
+
+
+## Generation
+# ----------------------------------
+velocity all create 300 12345 dist gaussian
+timestep ${vtimestep}
+thermo ${vthermo}
+thermo_style custom step temp press pe ke etotal ebond eangle epair lx ly lz vol density dt time cpu tpcpu spcpu cpuremain
+dump 1 all custom 10000 ./trj_gen.custom id type x y z ix iy iz
+dump_modify 1 first no sort id
+fix 1 all npt temp ${vtemp} ${vtemp} 100.0 iso ${vpressgen1} ${vpressgen2} 1000.0 
+run 100000
+fix 1 all npt temp ${vtemp} ${vtemp} 100.0 iso ${vpressgen2} ${vpressgen2} 1000.0 
+run 1000000
+fix 1 all npt temp ${vtemp} ${vtemp} 100.0 iso ${vpressgen2} ${vpress} 1000.0 
+run 100000
+write_data ./gen.data

@@ -1,0 +1,14 @@
+
+
+# ----------------- Init Section -----------------
+
+include "UA_system.in.init"
+
+
+# ----------------- Atom Definition Section -----------------
+
+read_data ./UA_system.data
+
+# ----------------- Settings Section -----------------
+
+include "UA_system.in.settings"

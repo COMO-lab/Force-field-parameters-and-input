@@ -1,0 +1,14 @@
+
+
+# ----------------- Init Section -----------------
+
+include "H_system.in.init"
+
+
+# ----------------- Atom Definition Section -----------------
+
+read_data ./H_system.data
+
+# ----------------- Settings Section -----------------
+
+include "H_system.in.settings"

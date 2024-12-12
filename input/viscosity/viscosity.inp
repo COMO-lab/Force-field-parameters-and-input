@@ -1,0 +1,67 @@
+# ----------------- Init Section -----------------
+units real
+boundary p p p
+
+# ----------------- Data Format -----------------
+atom_style full
+
+# ----------------- Force Field -----------------
+
+include system.in.init
+
+# ----------------- Atom Definition Section -----------------
+read_data ./gen.data nocoeff
+
+# ----------------- Settings Section -----------------
+include system.in.settings
+
+# ----------------- Charges Section -----------------
+include system.in.charges
+
+# ----------------------------------
+## Neigh_list Calc Frequency
+# ----------------------------------
+neighbor 2.0 bin
+neigh_modify delay 0 every 1 check yes
+timestep 1
+
+#----------------Viscosity calculation---------------
+reset_timestep 0
+variable  T equal 300.0
+variable Run_steps equal 24000000
+variable vthermo equal 1000
+
+fix nvt all nvt temp ${T} ${T} 100.0
+
+variable  s equal 5    # sample interval
+variable  p equal 30000  # correlation length
+variable  d equal $p*$s # dump interval
+variable  dt equal 0.5
+variable  V equal vol
+variable  kB equal 1.3806504e-23
+variable  A2m equal 1.0e-10
+variable  fs2s equal 1.0e-15
+variable  atm2Pa equal 101325.0
+variable  convert equal ${atm2Pa}*${atm2Pa}*${fs2s}*${A2m}*${A2m}*${A2m}
+
+variable  pxy equal pxy
+variable  pxz equal pxz
+variable  pyz equal pyz
+
+fix 4 all ave/correlate $s $p $d v_pxy v_pxz v_pyz file ./pressure.dat ave running
+
+variable       scale equal ${convert}/(${kB}*$T)*$V*$s*${dt}
+variable       v11 equal trap(f_4[3])*${scale}
+variable       v22 equal trap(f_4[4])*${scale}
+variable       v33 equal trap(f_4[5])*${scale}
+variable       v equal (v_v11+v_v22+v_v33)/3.0
+variable       density equal count(all)/vol
+variable       step equal step
+
+thermo ${vthermo}
+thermo_style   custom step temp pxy pxz pyz density
+
+fix 5 all print $d "v_step=${step} v_v11=${v11} v_v22=${v22} v_v33=${v33} v_v=${v} v_density=${density}" file ./viscosity.txt
+run            ${Run_steps}
+
+print "average viscosity is : ${v} Pa.s"
